@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.rewardsprogram.functional.RedemptionFunctionalTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-08-22T20:37:44.647Z" hostname="Davids-MacBook-Pro.local" time="0.129">
+  <properties/>
+  <testcase name="redencionConSaldoInsuficienteRetorna409ConMensajeClaro()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.021"/>
+  <testcase name="dobleRedencionQueEnConjuntoSuperaElSaldoFallaEnLaSegunda()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.02"/>
+  <testcase name="redencionDelTotalDisponibleDejaElSaldoEnCero()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.018"/>
+  <testcase name="redencionConPuntosCeroRetorna400()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.008"/>
+  <testcase name="redencionDeClienteSinComprasPreviasRetorna409()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.009"/>
+  <testcase name="redencionConPuntosNegativosRetorna400()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.007"/>
+  <testcase name="redencionConCustomerIdVacioRetorna400()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.007"/>
+  <testcase name="redencionConPuntosNoEnterosRetorna400()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.009"/>
+  <testcase name="redencionParcialExitosaDevuelveValorEnPesosYSaldoRestante()" classname="com.rewardsprogram.functional.RedemptionFunctionalTest" time="0.022"/>
+  <system-out><![CDATA[2026-08-22T15:37:44.648-05:00  INFO 7555 --- [rewards-program] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.rewardsprogram.functional.RedemptionFunctionalTest]: RedemptionFunctionalTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-22T15:37:44.649-05:00  INFO 7555 --- [rewards-program] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.rewardsprogram.RewardsProgramApplication for test class com.rewardsprogram.functional.RedemptionFunctionalTest
+2026-08-22T15:37:44.649-05:00  INFO 7555 --- [rewards-program] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.rewardsprogram.functional.RedemptionFunctionalTest]: RedemptionFunctionalTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-22T15:37:44.649-05:00  INFO 7555 --- [rewards-program] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.rewardsprogram.RewardsProgramApplication for test class com.rewardsprogram.functional.RedemptionFunctionalTest
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

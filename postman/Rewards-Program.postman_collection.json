@@ -1,0 +1,297 @@
+{
+  "info": {
+    "_postman_id": "a3f1c9d0-6b7e-4e2a-9c2a-2f6f9f3d4a1b",
+    "name": "Rewards Program API",
+    "description": "REST API for the customer rewards program. Business rules: every $1,000 spent earns 1 point (with the remainder carried over to future purchases until it completes another $1,000), and 1 point can be redeemed for $100. See the project README.md for full documentation.\n\nCollection variables:\n- `baseUrl`: base URL of the running application (default `http://localhost:8080`).\n- `customerId`: sample customer identifier used across the requests so you can run the whole collection top to bottom as one guided demo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "customerId",
+      "value": "cust-demo-001",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Purchases",
+      "description": "Endpoints to register a purchase and calculate the points it earns.",
+      "item": [
+        {
+          "name": "1 - Register Purchase (below $1,000 - starts carry-over)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"amount\": 700\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/purchases",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "purchases"]
+            },
+            "description": "Registers a $700 purchase. Since it is below the $1,000 threshold, it earns 0 points right now, but the $700 is not lost: it is kept as the customer's accumulated purchase total and will count towards the next purchase's points (carry-over rule). Expected response: `201 Created` with `pointsEarned: 0` and `totalAvailablePoints: 0`."
+          },
+          "response": [
+            {
+              "name": "201 Created - 0 points earned",
+              "originalRequest": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"cust-demo-001\",\n  \"amount\": 700\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/purchases",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "purchases"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"customerId\": \"cust-demo-001\",\n  \"purchaseId\": 1,\n  \"amount\": 700,\n  \"pointsEarned\": 0,\n  \"totalAvailablePoints\": 0\n}"
+            }
+          ]
+        },
+        {
+          "name": "2 - Register Purchase (completes the carry-over)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"amount\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/purchases",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "purchases"]
+            },
+            "description": "Registers a second $500 purchase for the same customer. Combined with the $700 carried over from the previous purchase, the accumulated total reaches $1,200, which completes 1 point ($700 + $500 = $1,200 -> floor($1,200 / $1,000) = 1). Expected response: `201 Created` with `pointsEarned: 1` and `totalAvailablePoints: 1`."
+          },
+          "response": [
+            {
+              "name": "201 Created - 1 point earned (carry-over completed)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"cust-demo-001\",\n  \"amount\": 500\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/purchases",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "purchases"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"customerId\": \"cust-demo-001\",\n  \"purchaseId\": 2,\n  \"amount\": 500,\n  \"pointsEarned\": 1,\n  \"totalAvailablePoints\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "3 - Register Purchase (validation error - negative amount)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"amount\": -50\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/purchases",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "purchases"]
+            },
+            "description": "Demonstrates input validation. `amount` must be strictly greater than 0, so this request is rejected before touching any business logic. Expected response: `400 Bad Request` with an `errors` array pointing at the `amount` field. The same 400 behavior applies to a blank `customerId` or a malformed JSON body."
+          },
+          "response": [
+            {
+              "name": "400 Bad Request - invalid amount",
+              "originalRequest": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"cust-demo-001\",\n  \"amount\": -50\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/purchases",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "purchases"]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"La solicitud contiene datos inválidos.\",\n  \"errors\": [\n    { \"field\": \"amount\", \"message\": \"amount debe ser mayor que 0\" }\n  ],\n  \"timestamp\": \"2026-08-22T20:14:53.016037Z\",\n  \"path\": \"/api/purchases\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Points Balance",
+      "description": "Endpoint to check how many points a customer currently has available.",
+      "item": [
+        {
+          "name": "Get Customer Points Balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/customers/{{customerId}}/points",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "customers", "{{customerId}}", "points"]
+            },
+            "description": "Returns the customer's total points earned, total points redeemed so far, and the currently available balance (`availablePoints = totalPointsEarned - totalPointsRedeemed`). If the customer has never made a purchase, this still returns `200 OK` with everything at 0 (it never returns 404). Run this after the two \"Purchases\" requests above to see `availablePoints: 1`."
+          },
+          "response": [
+            {
+              "name": "200 OK - customer with purchases",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/customers/cust-demo-001/points",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "customers", "cust-demo-001", "points"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"customerId\": \"cust-demo-001\",\n  \"totalPointsEarned\": 1,\n  \"totalPointsRedeemed\": 0,\n  \"availablePoints\": 1\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Redemptions",
+      "description": "Endpoint to redeem accumulated points for their monetary value ($100 per point).",
+      "item": [
+        {
+          "name": "1 - Redeem Points (valid)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"points\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/redemptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "redemptions"]
+            },
+            "description": "Redeems 1 point from the customer's balance (built up by the two purchases above). Each point is worth $100, so `amountValue` is 100.00 and the customer's remaining balance drops to 0. Expected response: `201 Created`."
+          },
+          "response": [
+            {
+              "name": "201 Created - redemption successful",
+              "originalRequest": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"cust-demo-001\",\n  \"points\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/redemptions",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "redemptions"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"customerId\": \"cust-demo-001\",\n  \"redemptionId\": 1,\n  \"pointsRedeemed\": 1,\n  \"amountValue\": 100.00,\n  \"remainingPoints\": 0\n}"
+            }
+          ]
+        },
+        {
+          "name": "2 - Redeem Points (insufficient balance)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"points\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/redemptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "redemptions"]
+            },
+            "description": "Attempts to redeem 5 points right after the balance was emptied by the previous request, so the customer no longer has enough points. Expected response: `409 Conflict` with a message stating how many points were requested versus how many are actually available. This is the required 'not enough points to redeem' error case."
+          },
+          "response": [
+            {
+              "name": "409 Conflict - insufficient points",
+              "originalRequest": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"cust-demo-001\",\n  \"points\": 5\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/redemptions",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "redemptions"]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"status\": 409,\n  \"error\": \"Conflict\",\n  \"message\": \"El cliente cust-demo-001 solicitó redimir 5 puntos pero solo tiene 0 disponibles.\",\n  \"errors\": [],\n  \"timestamp\": \"2026-08-22T20:14:53.016037Z\",\n  \"path\": \"/api/redemptions\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
