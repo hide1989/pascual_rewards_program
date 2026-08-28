@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.rewardsprogram.functional.CustomerPointsBalanceFunctionalTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-08-22T20:37:41.203Z" hostname="Davids-MacBook-Pro.local" time="3.275">
+  <properties/>
+  <testcase name="saldoReflejaPuntosGanadosMenosRedimidosTrasComprasYRedencion()" classname="com.rewardsprogram.functional.CustomerPointsBalanceFunctionalTest" time="0.879"/>
+  <system-out><![CDATA[15:37:41.295 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.rewardsprogram.functional.CustomerPointsBalanceFunctionalTest]: CustomerPointsBalanceFunctionalTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:37:41.366 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.rewardsprogram.RewardsProgramApplication for test class com.rewardsprogram.functional.CustomerPointsBalanceFunctionalTest
+15:37:41.409 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.rewardsprogram.functional.CustomerPointsBalanceFunctionalTest]: CustomerPointsBalanceFunctionalTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:37:41.410 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.rewardsprogram.RewardsProgramApplication for test class com.rewardsprogram.functional.CustomerPointsBalanceFunctionalTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-08-22T15:37:41.627-05:00  INFO 7555 --- [rewards-program] [    Test worker] .r.f.CustomerPointsBalanceFunctionalTest : Starting CustomerPointsBalanceFunctionalTest using Java 25.0.4 with PID 7555 (started by usuario in /Users/David/PASCUAL BRAVO/PRUEBAS DE SOFTWARE/rewards_program)
+2026-08-22T15:37:41.628-05:00  INFO 7555 --- [rewards-program] [    Test worker] .r.f.CustomerPointsBalanceFunctionalTest : No active profile set, falling back to 1 default profile: "default"
+2026-08-22T15:37:41.933-05:00  INFO 7555 --- [rewards-program] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-22T15:37:41.966-05:00  INFO 7555 --- [rewards-program] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 28 ms. Found 3 JPA repository interfaces.
+2026-08-22T15:37:42.217-05:00  INFO 7555 --- [rewards-program] [    Test worker] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-08-22T15:37:42.229-05:00  INFO 7555 --- [rewards-program] [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-22T15:37:42.230-05:00  INFO 7555 --- [rewards-program] [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-08-22T15:37:42.259-05:00  INFO 7555 --- [rewards-program] [    Test worker] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 619 ms
+2026-08-22T15:37:42.357-05:00  INFO 7555 --- [rewards-program] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-08-22T15:37:42.388-05:00  INFO 7555 --- [rewards-program] [    Test worker] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.24.Final
+2026-08-22T15:37:42.614-05:00  INFO 7555 --- [rewards-program] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-22T15:37:42.631-05:00  INFO 7555 --- [rewards-program] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-22T15:37:42.721-05:00  INFO 7555 --- [rewards-program] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:rewardsdb user=SA
+2026-08-22T15:37:42.721-05:00  INFO 7555 --- [rewards-program] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-22T15:37:42.752-05:00  INFO 7555 --- [rewards-program] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:rewardsdb]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: REWARDSDB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-08-22T15:37:43.177-05:00  INFO 7555 --- [rewards-program] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-22T15:37:43.196-05:00  INFO 7555 --- [rewards-program] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-22T15:37:43.238-05:00  INFO 7555 --- [rewards-program] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-22T15:37:43.412-05:00  WARN 7555 --- [rewards-program] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-22T15:37:43.592-05:00  INFO 7555 --- [rewards-program] [    Test worker] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 64183 (http) with context path '/'
+2026-08-22T15:37:43.596-05:00  INFO 7555 --- [rewards-program] [    Test worker] .r.f.CustomerPointsBalanceFunctionalTest : Started CustomerPointsBalanceFunctionalTest in 2.14 seconds (process running for 2.913)
+2026-08-22T15:37:44.090-05:00  INFO 7555 --- [rewards-program] [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-22T15:37:44.090-05:00  INFO 7555 --- [rewards-program] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-08-22T15:37:44.091-05:00  INFO 7555 --- [rewards-program] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+]]></system-out>
+  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/David/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.17.8/f09415827a71be7ed621c7bd02550678f28bc81c/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>

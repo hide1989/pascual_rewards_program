@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.rewardsprogram.functional.PurchaseFunctionalTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-08-22T20:37:44.480Z" hostname="Davids-MacBook-Pro.local" time="0.166">
+  <properties/>
+  <testcase name="compraConMontoNegativoRetorna400ConMensajeDeCampo()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.025"/>
+  <testcase name="carryOverEntreDosComprasAcumulaElRemanenteHastaCompletarElPunto()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.022"/>
+  <testcase name="secuenciaDeComprasPequenasAcumulaCorrectamenteCruzandoVariosMultiplos()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.029"/>
+  <testcase name="compraConDecimalesQueNoCompletanOtroMultiploOtorgaSoloElPuntoEntero()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.014"/>
+  <testcase name="compraConMontoCeroRetorna400()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.008"/>
+  <testcase name="compraConMontoMultiploExactoOtorgaLosPuntosCorrectos()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.014"/>
+  <testcase name="compraConCustomerIdVacioRetorna400()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.01"/>
+  <testcase name="compraConJsonMalformadoRetorna400()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.007"/>
+  <testcase name="compraMenorA1000NoOtorgaPuntosPeroElRemanenteNoSePierde()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.017"/>
+  <testcase name="consultarSaldoDeClienteSinComprasRetorna200ConCero()" classname="com.rewardsprogram.functional.PurchaseFunctionalTest" time="0.008"/>
+  <system-out><![CDATA[2026-08-22T15:37:44.481-05:00  INFO 7555 --- [rewards-program] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.rewardsprogram.functional.PurchaseFunctionalTest]: PurchaseFunctionalTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-22T15:37:44.482-05:00  INFO 7555 --- [rewards-program] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.rewardsprogram.RewardsProgramApplication for test class com.rewardsprogram.functional.PurchaseFunctionalTest
+2026-08-22T15:37:44.483-05:00  INFO 7555 --- [rewards-program] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.rewardsprogram.functional.PurchaseFunctionalTest]: PurchaseFunctionalTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-22T15:37:44.483-05:00  INFO 7555 --- [rewards-program] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.rewardsprogram.RewardsProgramApplication for test class com.rewardsprogram.functional.PurchaseFunctionalTest
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
