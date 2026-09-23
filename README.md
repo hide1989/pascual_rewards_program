@@ -18,6 +18,8 @@ There is no customer registration endpoint: a `customerId` is any string the cal
 - **Gradle** (Groovy DSL) as the build tool
 - **H2** in-memory database, accessed through **Spring Data JPA** repositories
 - Layered architecture with an explicit **command/handler** (CQRS-style) separation for the application layer
+- **JUnit 5 + Mockito + AssertJ** for unit tests, plus **RestTestClient**-based functional (end-to-end) tests
+- **JaCoCo** for test coverage measurement, enforced at a minimum of **80% instruction coverage**
 
 ## Project structure
 
@@ -35,7 +37,12 @@ src/main/java/com/rewardsprogram/
     service/           PointsCalculator (pure points arithmetic, no Spring dependency)
   repository/         Spring Data JPA repositories
   exception/          Business exceptions + global exception handler + error DTO
-src/test/java/com/rewardsprogram/functional/   Functional (end-to-end) tests
+src/test/java/com/rewardsprogram/
+  domain/service/               Unit tests for PointsCalculator (pure logic, no mocks needed)
+  application/handler/          Unit tests for the command/query handlers (Mockito mocks for repositories)
+  controller/                   Unit tests for the REST controllers (Mockito mocks for handlers)
+  exception/                    Unit tests for GlobalExceptionHandler (all exception -> status code mappings)
+  functional/                   Functional (end-to-end) tests, hitting the real HTTP API + real H2 database
 postman/                                        Postman collection (see below)
 ```
 
@@ -76,13 +83,49 @@ Use JDBC URL `jdbc:h2:mem:rewardsdb`, user `sa`, and an empty password.
 ./gradlew test
 ```
 
-This runs the full functional test suite (21 tests). There are intentionally no unit tests: every test exercises the application through real HTTP calls against a running Spring context and a real (in-memory) H2 database, covering the happy paths, the carry-over rule, and every validation/error case described below.
+This runs the **full test suite** (44 tests): 23 unit tests plus 21 functional (end-to-end) tests. A combined coverage report is generated automatically after `test` finishes (see [Test coverage (JaCoCo)](#test-coverage-jacoco) below).
 
-To run the whole build (compile + test + package the jar):
+To run the whole build (compile + test + enforce the coverage threshold + package the jar):
 
 ```bash
 ./gradlew build
 ```
+
+### Testing strategy
+
+The test suite is split into two complementary layers:
+
+- **Unit tests** (`src/test/java/com/rewardsprogram/{domain,application,controller,exception}/...`) — isolate a single class at a time using **Mockito** to mock its collaborators (repositories, handlers), following the **Arrange-Act-Assert (AAA)** pattern in every test method. Each layer with meaningful logic has its own unit tests:
+  - `PointsCalculatorTest` — the points arithmetic itself (no mocks needed, it is a pure function class): carry-over, exact multiples, redemption value conversion.
+  - `RegisterPurchaseHandlerTest`, `RedeemPointsHandlerTest`, `GetCustomerPointsBalanceHandlerTest` — the use-case orchestration logic, with the JPA repositories and `PointsCalculator` mocked via Mockito (`@Mock`/`@ExtendWith(MockitoExtension.class)`), verifying both the **happy path** (correct points/balance calculations, correct entities passed to `save(...)` via `ArgumentCaptor`) and the **expected exception** (`InsufficientPointsException` thrown when a redemption exceeds the available balance, including the edge case of a customer with no account at all).
+  - `PurchaseControllerTest`, `RedemptionControllerTest`, `CustomerPointsControllerTest` — the HTTP-to-command translation, with the handler mocked, verifying the returned status code and that exceptions thrown by a handler propagate unmodified (they are handled by `GlobalExceptionHandler`, not by the controller).
+  - `GlobalExceptionHandlerTest` — every exception-to-HTTP-status mapping (`400` for validation and malformed JSON, `409` for insufficient points, `500` for unexpected errors), using Mockito to simulate `MethodArgumentNotValidException`, `ConstraintViolationException`, etc.
+
+- **Functional tests** (`src/test/java/com/rewardsprogram/functional/...`) — exercise the application as a black box: real HTTP calls (via `RestTestClient`) against a running Spring context and a real in-memory H2 database, with no mocks at all. These cover the same business scenarios end-to-end, including the carry-over rule and every validation/error case, as documented in detail in the [Postman collection](#postman-collection) section below.
+
+Both layers use **JUnit 5** as the test runner and **AssertJ** (`assertThat`) for assertions.
+
+## Test coverage (JaCoCo)
+
+Test coverage is measured with the **JaCoCo** Gradle plugin. Running `./gradlew test` automatically generates a coverage report afterwards (the `test` task is `finalizedBy jacocoTestReport`). To generate the report explicitly:
+
+```bash
+./gradlew jacocoTestReport
+```
+
+Reports are written to:
+- HTML (human-readable): `build/reports/jacoco/test/html/index.html` — open this file in a browser to see line-by-line coverage per class.
+- XML (machine-readable, e.g. for CI): `build/reports/jacoco/test/jacocoTestReport.xml`
+
+### Coverage threshold
+
+The build enforces a **minimum of 80% instruction coverage** through the `jacocoTestCoverageVerification` task, which is wired into Gradle's standard `check` task — meaning it runs automatically as part of `./gradlew build` and fails the build if coverage drops below 80%. To run just the verification:
+
+```bash
+./gradlew jacocoTestCoverageVerification
+```
+
+As of this test suite, overall instruction coverage is **~95%**. The small remainder of uncovered instructions comes from code that is not meaningful to unit-test directly: the `main` method of `RewardsProgramApplication` (the Spring Boot bootstrap entry point, which would require starting a full separate server process to exercise) and the protected no-argument constructors that JPA entities (`CustomerPointsAccount`, `Purchase`, `Redemption`) are required to expose for Hibernate's internal reflection-based instantiation. Both are well above the required 80% threshold either way.
 
 ## API endpoints
 
